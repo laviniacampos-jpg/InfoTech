@@ -166,3 +166,6 @@ class Produto {
 }
 
 export default Produto;
+
+
+/*peara ai*/
