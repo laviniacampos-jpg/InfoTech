@@ -42,5 +42,40 @@ class ProdutoController extends Produto {
             return res.status(500).json({ mensagem: "Não foi possível obter informações do produto." });
         }
     }
+
+   // ...existing code...
+
+static async deletar(req: Request, res: Response): Promise<Response> {
+    try {
+        const idProduto: number = parseInt(req.params.idProduto as string);
+
+        const respostaModelo = await Produto.removerProduto(idProduto);
+
+        if (respostaModelo) {
+            return res.status(200).json({ mensagem: "Produto removido com sucesso." });
+        } else {
+            return res.status(400).json({ mensagem: "Erro ao remover produto." });
+        }
+    } catch (error) {
+        console.error(`Erro no modelo. ${error}`);
+        return res.status(500).json({ mensagem: "Não foi possível remover o produto." });
+    }
+}
+ static async atualizar(req: Request, res: Response): Promise<Response> {
+    try {
+        const idProduto: number = parseInt(req.params.idProduto as string);
+        const dadosAtualizados = req.body;
+        const respostaModelo = await Produto.atualizarProduto(idProduto, dadosAtualizados);
+
+        if (respostaModelo) {
+            return res.status(200).json({ mensagem: "Produto atualizado com sucesso." });
+        } else {
+            return res.status(400).json({ mensagem: "Erro ao atualizar produto." });
+        }
+    } catch (error) {
+        console.error(`Erro no modelo. ${error}`);
+        return res.status(500).json({ mensagem: "Não foi possível atualizar o produto." });
+    }
+}
 }
 export default ProdutoController;

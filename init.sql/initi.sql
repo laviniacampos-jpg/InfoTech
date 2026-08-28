@@ -491,3 +491,18 @@ FROM movimentacao AS m
 INNER JOIN produto AS p
     ON p.id_produto = m.id_produto
 ORDER BY m.data_movimentacao DESC;
+
+
+CREATE TABLE usuarios (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    senha VARCHAR(255) NOT NULL,
+    role VARCHAR(50) NOT NULL,
+    exp BIGINT NOT NULL
+);
+
+INSERT INTO usuarios(nome, email, senha, role, exp)
+VALUES (
+'Administrador','admin@infotech.com','12345','admin',1787731200
+);
