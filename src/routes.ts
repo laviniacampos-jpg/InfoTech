@@ -39,7 +39,7 @@ router.get('/api/produtos/:id', ProdutoController.produto);
 
 // Cadastra um novo produto — os dados chegam no corpo (body) da requisição em formato JSON
 // O body é lido no controller via req.body
-router.post('/api/produtos', ProdutoController.cadastrarProduto);
+router.post('/api/produtos', ProdutoController.novo);
 
 // Remove logicamente o produto com o ID informado — não apaga do banco, apenas desativa (status = FALSE)
 // Também desativa todos os empréstimos relacionados ao produto
