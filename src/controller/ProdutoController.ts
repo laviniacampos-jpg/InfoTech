@@ -28,7 +28,16 @@ class ProdutoController extends Produto {
             }
         } catch (error) {
             console.error(`Erro no modelo. ${error}`);
-            return res.status(500).json({ mensagem: "Não foi possível inserir o produto." });
+            if (
+                typeof error === "object" &&
+                error !== null &&
+                "constraint" in error &&
+                error.constraint === "uq_produto_codigo"
+            ) {
+                return res.status(409).json({ message: "Código de produto já existe." });
+            }
+
+            return res.status(400).json({ message: "Erro ao cadastrar produto no banco." });
         }
     }
 
