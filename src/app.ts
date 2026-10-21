@@ -1,4 +1,3 @@
-
 // Importa a classe DatabaseModel — usada para testar a conexão com o banco antes de subir o servidor
 import { DatabaseModel } from "./model/DatabaseModel.js";
 
