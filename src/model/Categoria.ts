@@ -68,7 +68,7 @@ class Categoria {
         const listaDeCategorias: Array<CategoriaDTO> = [];
 
         try {
-            const querySelectCategoria = `SELECT * FROM categoria WHERE ativo = TRUE ORDER BY nome;`;
+            const querySelectCategoria = `SELECT * FROM categoria ORDER BY nome;`;
             const respostaBD = await database.query(querySelectCategoria);
 
             for (const categoria of respostaBD.rows) {

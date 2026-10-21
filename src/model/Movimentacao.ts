@@ -128,7 +128,22 @@ class Movimentacao {
         let listaDeMovimentacoes: Array<MovimentacaoDTO> = [];
 
         try {
-            const querySelectMovimentacao = `SELECT * FROM movimentacao WHERE ativo = TRUE ORDER BY id_movimentacao;`;
+            const querySelectMovimentacao = `
+                SELECT
+                    id_movimentacao,
+                    id_produto,
+                    id_movimentacao_origem,
+                    motivo AS motivo_movimentacao,
+                    tipo AS tipo_movimentacao,
+                    quantidade,
+                    preco_unitario_praticado AS preco_unitario,
+                    valor_total,
+                    observacao,
+                    data_movimentacao,
+                    TRUE AS ativo
+                FROM movimentacao
+                ORDER BY id_movimentacao;
+            `;
             const respostaBD = await database.query(querySelectMovimentacao);
 
             for (const movimentacao of respostaBD.rows) {
@@ -164,7 +179,22 @@ class Movimentacao {
      */
     static async listarMovimentacao(id_movimentacao: number): Promise<MovimentacaoDTO | null> {
         try {
-            const querySelectMovimentacao = `SELECT * FROM movimentacao WHERE id_movimentacao = $1;`;
+            const querySelectMovimentacao = `
+                SELECT
+                    id_movimentacao,
+                    id_produto,
+                    id_movimentacao_origem,
+                    motivo AS motivo_movimentacao,
+                    tipo AS tipo_movimentacao,
+                    quantidade,
+                    preco_unitario_praticado AS preco_unitario,
+                    valor_total,
+                    observacao,
+                    data_movimentacao,
+                    TRUE AS ativo
+                FROM movimentacao
+                WHERE id_movimentacao = $1;
+            `;
             const respostaBD = await database.query(querySelectMovimentacao, [id_movimentacao]);
 
             if (respostaBD.rows.length === 0) {
@@ -236,7 +266,7 @@ class Movimentacao {
     static async cadastrarMovimentacao(movimentacao: Movimentacao): Promise<boolean> {
         try {
             const queryInsertMovimentacao = `
-                INSERT INTO movimentacao (id_produto, motivo_movimentacao, id_movimentacao_origem, quantidade, tipo_movimentacao, preco_unitario, valor_total, observacao, data_movimentacao)
+                INSERT INTO movimentacao (id_produto, motivo, id_movimentacao_origem, quantidade, tipo, preco_unitario_praticado, valor_total, observacao, data_movimentacao)
                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
                 RETURNING id_movimentacao;`;
 
@@ -246,8 +276,8 @@ class Movimentacao {
                 movimentacao.getIdMovimentacaoOrigem(),
                 movimentacao.getQuantidade(),
                 movimentacao.getTipoMovimentacao(),
-                movimentacao.getPrecoUnitario(),
-                movimentacao.getValorTotal(),
+                movimentacao.getMotivoMovimentacao() === "VENDA" ? movimentacao.getPrecoUnitario() : null,
+                movimentacao.getMotivoMovimentacao() === "VENDA" ? movimentacao.getValorTotal() : null,
                 movimentacao.getObservacao(),
                 movimentacao.getDataMovimentacao()
             ];
@@ -262,7 +292,7 @@ class Movimentacao {
             return false;
         } catch (error) {
             console.error(`Erro ao cadastrar movimentação: ${error}`);
-            return false;
+            throw error;
         }
     }
 

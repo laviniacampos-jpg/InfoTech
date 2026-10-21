@@ -96,7 +96,7 @@ class CategoriaController {
         }
     }
 
-    static async remover(req: Request, res: Response): Promise<Response> {
+    static async deletar(req: Request, res: Response): Promise<Response> {
         try {
             const id_categoria = parseInt(req.params.id_categoria as string, 10);
 

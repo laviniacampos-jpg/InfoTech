@@ -1,10 +1,38 @@
+CREATE TABLE usuarios (
+    id INTEGER GENERATED ALWAYS AS IDENTITY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(150) NOT NULL,
+    senha VARCHAR(255) NOT NULL,
+    role VARCHAR(20) NOT NULL DEFAULT 'USER',
+    ativo BOOLEAN NOT NULL DEFAULT TRUE,
+    data_cadastro TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT pk_usuarios PRIMARY KEY (id),
+    CONSTRAINT uq_usuarios_email UNIQUE (email),
+    CONSTRAINT ck_usuarios_role CHECK (role IN ('ADMIN', 'USER'))
+);
+
+
+INSERT INTO usuarios (nome, email, senha, role)
+VALUES ('Administrador', 'admin@infotech.com', 'Admin123!', 'ADMIN');
+
+
 CREATE TABLE categoria (
     id_categoria INTEGER GENERATED ALWAYS AS IDENTITY,
     nome VARCHAR(80) NOT NULL,
+    descricao VARCHAR(255) NOT NULL DEFAULT '',
+    ativo BOOLEAN NOT NULL DEFAULT TRUE,
+    data_cadastro TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT pk_categoria PRIMARY KEY (id_categoria),
     CONSTRAINT uq_categoria_nome UNIQUE (nome)
 );
+
+-- Atualiza bancos existentes sem perder as categorias já cadastradas.
+ALTER TABLE categoria
+    ADD COLUMN IF NOT EXISTS descricao VARCHAR(255) NOT NULL DEFAULT '',
+    ADD COLUMN IF NOT EXISTS ativo BOOLEAN NOT NULL DEFAULT TRUE,
+    ADD COLUMN IF NOT EXISTS data_cadastro TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
 
 
 CREATE TABLE produto (

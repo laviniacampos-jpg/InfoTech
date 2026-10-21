@@ -43,7 +43,7 @@ class ProdutoController extends Produto {
 
     static async id(req: Request, res: Response): Promise<Response> {
         try {
-            const idProduto: number = parseInt(req.params.idProduto as string);
+            const idProduto: number = parseInt(req.params.id_produto as string, 10);
             const respostaModel = await Produto.listarProdutoId(idProduto);
             return res.status(200).json(respostaModel);
         } catch (error) {
@@ -56,7 +56,7 @@ class ProdutoController extends Produto {
 
 static async deletar(req: Request, res: Response): Promise<Response> {
     try {
-        const idProduto: number = parseInt(req.params.idProduto as string);
+        const idProduto: number = parseInt(req.params.id_produto as string, 10);
 
         const respostaModelo = await Produto.removerProduto(idProduto);
 
@@ -72,7 +72,7 @@ static async deletar(req: Request, res: Response): Promise<Response> {
 }
  static async atualizar(req: Request, res: Response): Promise<Response> {
     try {
-        const idProduto: number = parseInt(req.params.idProduto as string);
+        const idProduto: number = parseInt(req.params.id_produto as string, 10);
         const dadosAtualizados = req.body;
         const respostaModelo = await Produto.atualizarProduto(idProduto, dadosAtualizados);
 
