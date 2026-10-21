@@ -153,3 +153,4 @@ class CategoriaController {
 }
 
 export default CategoriaController
+///////////////
